@@ -1,0 +1,7 @@
+with open("data/test.txt", "W") as db:
+				vehicles = [{'make': 'Ford', 'model': 'F-150'},
+							{'make': 'Chevrolet', 'model': 'Silverado'},
+							{'make': 'Tesla', 'model': 'Cybertruck'},
+							{'make': 'Toyota', 'model': 'Tundra'},
+							{'make': 'Nissan', 'model': 'Titan'}]
+                           
