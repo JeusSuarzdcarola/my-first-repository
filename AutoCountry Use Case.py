@@ -1,9 +1,8 @@
-# AutoCountry Vehicle Finder v0.1.3
-# This program is designed to help the AutoCountry sales manager determine which vehicles are authorized for purchase and sale.
-# Path to the file storing authorized vehicles
+# AutoCountry Vehicle Finder v0.1.5
+# This program is designed to help the AutoCountry sales manager choose which vehicles to purchase and sell.
 import os
 
-# File where vehicles are stored
+#Stored vehicle file
 VEHICLE_FILE = "data/test.txt"
 
 def load_vehicles():
@@ -16,14 +15,35 @@ def load_vehicles():
         return default_vehicles
     else:
         with open(VEHICLE_FILE, 'r') as f:
-            return [line.strip() for line in f if line.strip()]
+                return [line.strip() for line in f if line.strip()]
+                
+def save_vehicles(vehicles):
+    with open(VEHICLE_FILE, 'w') as f:
+        for v in vehicles:
+            f.write(v + '\n')
 
-def save_vehicle(vehicle):
-    with open(VEHICLE_FILE, 'a') as f:
-        f.write(vehicle + '\n')
+def add_vehicle(vehicle, vehicles):
+    if vehicle in vehicles:
+        print(f"{vehicle} is already in the authorized vehicles list.")
+    else:
+        vehicles.append(vehicle)
+        save_vehicles(vehicles)
+        print(f"{vehicle} has been added as an authorized vehicle.") 
+
+def delete_vehicle(vehicle, vehicles):
+    if vehicle in vehicles:
+        confirm = input(f"Are you sure you want to delete {vehicle}? (yes/no): ").strip().lower()
+        if confirm == 'yes':
+            vehicles.remove(vehicle)
+            save_vehicles(vehicles)
+            print(f"{vehicle} has been removed from the list.")
+        else:
+            print("Delete cancelled.")
+    else:
+        print(f"{vehicle} is not in the authorized vehicles list.")
 
 def display_menu():
-    print("\nPlease Enter the following number below from the following menu:")
+    print("\nPlease enter a number from the following menu:")
     print("1. PRINT all Authorized Vehicles")
     print("2. SEARCH for Authorized Vehicle")
     print("3. ADD Authorized Vehicle")
@@ -34,57 +54,35 @@ def main():
     vehicles = load_vehicles()
     while True:
         display_menu()
-        choice = input("Choose an option (1-5): ").strip()
+        choice = input("choose an option (1-5): ").strip()
 
         if choice == '1':
-            print("\nAuthorized Vehicles:")
+            print("\n The AutoCountry sales manager has authorized the purchase and selling of the following vehicles:")
             for v in vehicles:
                 print(f"- {v}")
 
         elif choice == '2':
-            name = input("\nEnter vehicle name to search: ").strip()
-            if name in vehicles:
+             name = input("\nsearch vehicle name: ").strip()
+             if name in vehicles:
                 print(f"{name} is an authorized vehicle.")
-            else:
-                print(f"{name} is NOT an authorized vehicle. If you received this error, please check the spelling and try again.")
+             else:
+                    print(f"{name} is NOT an authorized vehicle. If you received this error, please check the spelling and try again.")
 
         elif choice == '3':
-            new_vehicle = input("\nPlease Enter the name of the vehicle to add: ").strip()
-            if new_vehicle in vehicles:
-                print(f"{new_vehicle} is already in the authorized vehicles list.")
-            else:
-                vehicles.append(new_vehicle)
-                save_vehicle(new_vehicle)
-                print(f"You have added {new_vehicle} as an authorized vehicle.")
-        elif choice == '4':
-            delete_vehicle = input("\nPlease Enter the full Vehicle name you would like to REMOVE: ").strip()
-            if delete_vehicle in vehicles:
-                print(f"Are you sure you want to delete {delete_vehicle}? (yes/no)")
-                confirm = input().strip().lower()
-                if confirm == 'yes':
-                    vehicles.remove(delete_vehicle)
-                    with open(VEHICLE_FILE, 'w') as f:
-                        for v in vehicles:
-                            f.write(v + '\n')
-                    print(f"You have deleted {delete_vehicle} from the authorized vehicles list.")
-                else:
-                    print(f"{delete_vehicle} was not deleted.")
-            else:
-                print(f"{delete_vehicle} is not in the authorized vehicles list.")
+            new_vehicle = input("\nplease enter vehicle name to add: ").strip()
+            add_vehicle(new_vehicle, vehicles)
 
-        elif choice == '5':
-            print("\nThank you for using the AutoCountry Vehicle Finder, Good-bye!")
+        elif choice == '4':
+             remove_vehicle = input("\nPlease enter the full vehicle name to remove: ").strip()
+             delete_vehicle(remove_vehicle, vehicles)
             
+        elif choice == '5':
+             print("\nThank you for using the AutoCountry Vehicle Finder. Good-bye!!")
+             break
 
         else:
-            print("\nInvalid input. Please enter 1, 2, 3, 4, or 5.")
-            break
+            print("\nInvalid choice. Please enter a number from 1 to 5.")
 
 if __name__ == "__main__":
     main()
-# The program will display a menu with two options: to print the list of authorized vehicles or to exit the program.
-# When the user selects option 1, the program will print the list of authorized vehicles.
-# When the user selects option 2, the program will exit.
-# The program will also allow the user to search for a specific vehicle by entering its name.
-# If the vehicle is found in the list, the program will confirm that it is an authorized vehicle.
-# The program will continue to display the menu until the user chooses to exit.
+        
