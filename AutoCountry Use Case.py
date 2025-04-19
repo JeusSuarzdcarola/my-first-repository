@@ -1,4 +1,4 @@
-# AutoCountry Vehicle Finder v0.1.5
+# AutoCountry Vehicle Finder v1.0
 # This program is designed to help the AutoCountry sales manager choose which vehicles to purchase and sell.
 import os
 
@@ -41,6 +41,27 @@ def delete_vehicle(vehicle, vehicles):
             print("Delete cancelled.")
     else:
         print(f"{vehicle} is not in the authorized vehicles list.")
+
+# ---Functions for the menu options---
+def print_authorized_vehicles(vehicles):
+    print("\nThe AutoCountry sales manager has authorized the purchase and selling of the following vehicles:")
+    for v in vehicles:
+        print(f"- {v}")
+
+def search_vehicle(vehicles):
+    name = input("\nsearch vehicle name: ").strip()
+    if name in vehicles:
+        print(f"{name} is an authorized vehicle.")
+    else:
+        print(f"{name} is NOT an authorized vehicle. If you received this error, please check the spelling and try again.")
+
+def add_authorized_vehicle(vehicles):
+    new_vehicle = input("\nplease enter the vehicle's full name to add: ").strip()
+    add_vehicle(new_vehicle, vehicles)
+
+def delete_authorized_vehicle(vehicles):
+    remove_vehicle = input("\nplease enter the vehicle's full name to remove: ").strip()
+    delete_vehicle(remove_vehicle, vehicles)                    
 
 def display_menu():
     print("\nPlease enter a number from the following menu:")
